@@ -26,7 +26,25 @@ type Shipment struct {
 	driverRevenue   Money
 }
 
-func NewShipment(ref, origin, dest string, amount Money) *Shipment {
+func (s Shipment) GetID() uuid.UUID {
+	return s.id
+}
+
+func (s Shipment) GetReferenceNumber() string {
+	return s.referenceNumber
+}
+func (s Shipment) GetOrigin() string {
+	return s.origin
+}
+func (s Shipment) GetDestination() string {
+	return s.destination
+}
+
+func (s Shipment) GetCurrentStatus() ShipmentStatus {
+	return s.currentStatus
+}
+
+func NewShipment(ref, origin, dest string) *Shipment {
 	return &Shipment{
 		id:              uuid.New(),
 		referenceNumber: ref,
@@ -34,7 +52,6 @@ func NewShipment(ref, origin, dest string, amount Money) *Shipment {
 		destination:     dest,
 		currentStatus:   StatusPending,
 		units:           make([]Unit, 0),
-		amount:          amount,
 	}
 }
 
