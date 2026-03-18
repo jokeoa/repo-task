@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"fmt"
 	"tracker-task/internal/domain"
 )
 
@@ -12,7 +11,7 @@ type ShipmentService struct {
 
 func (s *ShipmentService) CreateShipment(ref, origin, dest string, units []domain.Unit) (*domain.Shipment, error) {
 	if ref == "" || origin == "" || dest == "" || len(units) == 0 {
-		return nil, fmt.Errorf("reference number, origin, destination and units are required")
+		return nil, domain.ErrInvalidTransition
 	}
 
 	shipment := domain.NewShipment(ref, origin, dest)
@@ -22,6 +21,16 @@ func (s *ShipmentService) CreateShipment(ref, origin, dest string, units []domai
 	}
 
 	if err := s.shipmentRepo.SaveShipment(shipment); err != nil {
+		return nil, err
+	}
+
+	event, err := shipment.AddEvent(domain.StatusPending)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if err := s.eventRepo.SaveEvent(event); err != nil {
 		return nil, err
 	}
 
