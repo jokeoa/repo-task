@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package shipment;
+
+option go_package = "tracker-task/proto/shipment";
+
+service ShipmentService {
+  rpc CreateShipment(CreateShipmentRequest) returns (ShipmentResponse);
+  rpc AddStatusEvent(AddStatusEventRequest) returns (ShipmentEventResponse);
+  rpc GetShipmentHistory(GetShipmentRequest) returns (ShipmentEventHistoryResponse);
+  rpc GetShipmentByID(GetShipmentRequest) returns (ShipmentResponse);
+}
+
+message ShipmentEventHistoryResponse {
+  string shipment_id = 1;
+  repeated ShipmentEventResponse events = 2;
+}
+message AddStatusEventRequest {
+  string shipment_id = 1;
+  string status = 2;
+}
+
+message ShipmentEventResponse {
+  string shipment_id = 1;
+  string status = 2;
+  string timestamp = 3;
+}
+
+message CreateShipmentRequest {
+  string reference_number = 1;
+  string origin = 2;
+  string destination = 3;
+}
+
+message GetShipmentRequest {
+  string shipment_id = 1;
+}
+
+message ShipmentResponse {
+  string shipment_id = 1;
+  string reference_number = 2;
+  string origin = 3;
+  string destination = 4;
+  string status = 5;
+}
