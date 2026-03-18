@@ -15,9 +15,10 @@ import (
 
 // MockShipmentRepository implements domain.ShipmentRepository for testing.
 type MockShipmentRepository struct {
-	SaveShipmentFn    func(shipment *domain.Shipment) error
-	SaveShipmentCalls []*domain.Shipment
-	SaveStatuses      []domain.ShipmentStatus
+	SaveShipmentFn      func(shipment *domain.Shipment) error
+	GetShipmentByIDFn   func(id uuid.UUID) (domain.Shipment, error)
+	SaveShipmentCalls   []*domain.Shipment
+	SaveStatuses        []domain.ShipmentStatus
 }
 
 func (m *MockShipmentRepository) SaveShipment(shipment *domain.Shipment) error {
@@ -29,14 +30,18 @@ func (m *MockShipmentRepository) SaveShipment(shipment *domain.Shipment) error {
 	return nil
 }
 
-func (m *MockShipmentRepository) GetShipmentByID(_ uuid.UUID) (domain.Shipment, error) {
-	return domain.Shipment{}, nil
+func (m *MockShipmentRepository) GetShipmentByID(id uuid.UUID) (domain.Shipment, error) {
+	if m.GetShipmentByIDFn != nil {
+		return m.GetShipmentByIDFn(id)
+	}
+	return domain.Shipment{}, domain.ErrShipmentNotFound
 }
 
 // MockEventRepository implements domain.EventRepository for testing.
 type MockEventRepository struct {
-	SaveEventFn    func(event domain.ShipmentEvent) error
-	SaveEventCalls []domain.ShipmentEvent
+	SaveEventFn              func(event domain.ShipmentEvent) error
+	GetEventsByShipmentIDFn  func(id uuid.UUID) ([]domain.ShipmentEvent, error)
+	SaveEventCalls           []domain.ShipmentEvent
 }
 
 func (m *MockEventRepository) SaveEvent(event domain.ShipmentEvent) error {
@@ -47,7 +52,10 @@ func (m *MockEventRepository) SaveEvent(event domain.ShipmentEvent) error {
 	return nil
 }
 
-func (m *MockEventRepository) GetEventsByShipmentID(_ uuid.UUID) ([]domain.ShipmentEvent, error) {
+func (m *MockEventRepository) GetEventsByShipmentID(id uuid.UUID) ([]domain.ShipmentEvent, error) {
+	if m.GetEventsByShipmentIDFn != nil {
+		return m.GetEventsByShipmentIDFn(id)
+	}
 	return nil, nil
 }
 
@@ -70,10 +78,7 @@ func TestCreateShipment(t *testing.T) {
 
 	tests := []struct {
 		name             string
-		ref              string
-		origin           string
-		dest             string
-		units            []domain.Unit
+		input            usecase.CreateShipmentInput
 		saveShipmentFn   func(*domain.Shipment) error
 		saveEventFn      func(domain.ShipmentEvent) error
 		expectError      bool
@@ -85,59 +90,59 @@ func TestCreateShipment(t *testing.T) {
 		expectSavedAs    domain.ShipmentStatus
 	}{
 		{
-			name:        "EmptyUnits",
-			ref:         "REF-001",
-			origin:      "NYC",
-			dest:        "LAX",
-			units:       []domain.Unit{},
+			name: "EmptyUnits",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "LAX",
+				Units: []domain.Unit{},
+			},
 			expectError: true,
 			errContains: "at least one unit",
 		},
 		{
-			name:        "NilUnits",
-			ref:         "REF-001",
-			origin:      "NYC",
-			dest:        "LAX",
-			units:       nil,
+			name: "NilUnits",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "LAX",
+				Units: nil,
+			},
 			expectError: true,
 			errContains: "at least one unit",
 		},
 		{
-			name:            "EmptyRef",
-			ref:             "",
-			origin:          "NYC",
-			dest:            "LAX",
-			units:           validUnits,
+			name: "EmptyRef",
+			input: usecase.CreateShipmentInput{
+				Reference: "", Origin: "NYC", Destination: "LAX",
+				Units: validUnits,
+			},
 			expectError:     true,
 			errIs:           domain.ErrInvalidShipmentData,
 			expectSaveCalls: 0,
 		},
 		{
-			name:            "EmptyOrigin",
-			ref:             "REF-001",
-			origin:          "",
-			dest:            "LAX",
-			units:           validUnits,
+			name: "EmptyOrigin",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "", Destination: "LAX",
+				Units: validUnits,
+			},
 			expectError:     true,
 			errIs:           domain.ErrInvalidShipmentData,
 			expectSaveCalls: 0,
 		},
 		{
-			name:            "EmptyDest",
-			ref:             "REF-001",
-			origin:          "NYC",
-			dest:            "",
-			units:           validUnits,
+			name: "EmptyDest",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "",
+				Units: validUnits,
+			},
 			expectError:     true,
 			errIs:           domain.ErrInvalidShipmentData,
 			expectSaveCalls: 0,
 		},
 		{
-			name:   "SaveShipmentError",
-			ref:    "REF-001",
-			origin: "NYC",
-			dest:   "LAX",
-			units:  validUnits,
+			name: "SaveShipmentError",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "LAX",
+				Units: validUnits,
+			},
 			saveShipmentFn: func(_ *domain.Shipment) error {
 				return fmt.Errorf("database connection failed")
 			},
@@ -148,22 +153,22 @@ func TestCreateShipment(t *testing.T) {
 			expectSavedAs:    domain.StatusPending,
 		},
 		{
-			name:             "ValidInputs",
-			ref:              "REF-001",
-			origin:           "NYC",
-			dest:             "LAX",
-			units:            validUnits,
+			name: "ValidInputs",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "LAX",
+				Units: validUnits,
+			},
 			expectSaveCalls:  1,
 			expectEventCalls: 1,
 			expectStatus:     domain.StatusPending,
 			expectSavedAs:    domain.StatusPending,
 		},
 		{
-			name:   "SaveEventError",
-			ref:    "REF-001",
-			origin: "NYC",
-			dest:   "LAX",
-			units:  validUnits,
+			name: "SaveEventError",
+			input: usecase.CreateShipmentInput{
+				Reference: "REF-001", Origin: "NYC", Destination: "LAX",
+				Units: validUnits,
+			},
 			saveEventFn: func(_ domain.ShipmentEvent) error {
 				return fmt.Errorf("event store unavailable")
 			},
@@ -171,6 +176,23 @@ func TestCreateShipment(t *testing.T) {
 			errContains:      "event store unavailable",
 			expectSaveCalls:  1,
 			expectEventCalls: 1,
+			expectSavedAs:    domain.StatusPending,
+		},
+		{
+			name: "WithDriverAndAmount",
+			input: func() usecase.CreateShipmentInput {
+				driverID := uuid.New()
+				return usecase.CreateShipmentInput{
+					Reference: "REF-002", Origin: "NYC", Destination: "LAX",
+					Units:         validUnits,
+					Driver:        &driverID,
+					Amount:        5000,
+					DriverRevenue: 1500,
+				}
+			}(),
+			expectSaveCalls:  1,
+			expectEventCalls: 1,
+			expectStatus:     domain.StatusPending,
 			expectSavedAs:    domain.StatusPending,
 		},
 	}
@@ -181,7 +203,7 @@ func TestCreateShipment(t *testing.T) {
 			eventRepo := &MockEventRepository{SaveEventFn: tc.saveEventFn}
 			svc := newTestService(shipmentRepo, eventRepo)
 
-			shipment, err := svc.CreateShipment(tc.ref, tc.origin, tc.dest, tc.units)
+			shipment, err := svc.CreateShipment(tc.input)
 
 			if tc.expectError {
 				require.Error(t, err)
@@ -209,4 +231,190 @@ func TestCreateShipment(t *testing.T) {
 			assert.Len(t, eventRepo.SaveEventCalls, tc.expectEventCalls)
 		})
 	}
+}
+
+func TestAddStatusEvent(t *testing.T) {
+	// Helper to create a shipment in Pending state
+	createPendingShipment := func() *domain.Shipment {
+		s, _ := domain.NewShipment("REF-001", "NYC", "LAX")
+		s.AddUnit(domain.Unit{ID: uuid.New(), Description: "Box"})
+		s.AddEvent(domain.StatusPending)
+		return s
+	}
+
+	t.Run("ValidTransition", func(t *testing.T) {
+		pending := createPendingShipment()
+		shipmentRepo := &MockShipmentRepository{
+			GetShipmentByIDFn: func(_ uuid.UUID) (domain.Shipment, error) {
+				return *pending, nil
+			},
+		}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		event, err := svc.AddStatusEvent(pending.GetID(), domain.StatusPickedUp)
+
+		require.NoError(t, err)
+		require.NotNil(t, event)
+		assert.Equal(t, domain.StatusPickedUp, event.Status)
+		assert.Len(t, shipmentRepo.SaveShipmentCalls, 1)
+		assert.Len(t, eventRepo.SaveEventCalls, 1)
+	})
+
+	t.Run("InvalidTransition", func(t *testing.T) {
+		pending := createPendingShipment()
+		shipmentRepo := &MockShipmentRepository{
+			GetShipmentByIDFn: func(_ uuid.UUID) (domain.Shipment, error) {
+				return *pending, nil
+			},
+		}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		event, err := svc.AddStatusEvent(pending.GetID(), domain.StatusDelivered)
+
+		require.Error(t, err)
+		assert.Nil(t, event)
+		assert.True(t, errors.Is(err, domain.ErrInvalidTransition))
+		assert.Empty(t, shipmentRepo.SaveShipmentCalls)
+		assert.Empty(t, eventRepo.SaveEventCalls)
+	})
+
+	t.Run("ShipmentNotFound", func(t *testing.T) {
+		shipmentRepo := &MockShipmentRepository{}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		event, err := svc.AddStatusEvent(uuid.New(), domain.StatusPickedUp)
+
+		require.Error(t, err)
+		assert.Nil(t, event)
+		assert.True(t, errors.Is(err, domain.ErrShipmentNotFound))
+	})
+
+	t.Run("SaveShipmentError", func(t *testing.T) {
+		pending := createPendingShipment()
+		shipmentRepo := &MockShipmentRepository{
+			GetShipmentByIDFn: func(_ uuid.UUID) (domain.Shipment, error) {
+				return *pending, nil
+			},
+			SaveShipmentFn: func(_ *domain.Shipment) error {
+				return fmt.Errorf("save failed")
+			},
+		}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		event, err := svc.AddStatusEvent(pending.GetID(), domain.StatusPickedUp)
+
+		require.Error(t, err)
+		assert.Nil(t, event)
+		assert.Contains(t, err.Error(), "save failed")
+	})
+
+	t.Run("SaveEventError", func(t *testing.T) {
+		pending := createPendingShipment()
+		shipmentRepo := &MockShipmentRepository{
+			GetShipmentByIDFn: func(_ uuid.UUID) (domain.Shipment, error) {
+				return *pending, nil
+			},
+		}
+		eventRepo := &MockEventRepository{
+			SaveEventFn: func(_ domain.ShipmentEvent) error {
+				return fmt.Errorf("event save failed")
+			},
+		}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		event, err := svc.AddStatusEvent(pending.GetID(), domain.StatusPickedUp)
+
+		require.Error(t, err)
+		assert.Nil(t, event)
+		assert.Contains(t, err.Error(), "event save failed")
+	})
+}
+
+func TestGetShipmentByID(t *testing.T) {
+	t.Run("Found", func(t *testing.T) {
+		s, _ := domain.NewShipment("REF-001", "NYC", "LAX")
+		shipmentRepo := &MockShipmentRepository{
+			GetShipmentByIDFn: func(_ uuid.UUID) (domain.Shipment, error) {
+				return *s, nil
+			},
+		}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		result, err := svc.GetShipmentByID(s.GetID())
+
+		require.NoError(t, err)
+		require.NotNil(t, result)
+		assert.Equal(t, s.GetReferenceNumber(), result.GetReferenceNumber())
+	})
+
+	t.Run("NotFound", func(t *testing.T) {
+		shipmentRepo := &MockShipmentRepository{}
+		eventRepo := &MockEventRepository{}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		result, err := svc.GetShipmentByID(uuid.New())
+
+		require.Error(t, err)
+		assert.Nil(t, result)
+		assert.True(t, errors.Is(err, domain.ErrShipmentNotFound))
+	})
+}
+
+func TestGetShipmentHistory(t *testing.T) {
+	shipmentID := uuid.New()
+
+	t.Run("HasEvents", func(t *testing.T) {
+		events := []domain.ShipmentEvent{
+			{ShipmentID: shipmentID, Status: domain.StatusPending},
+			{ShipmentID: shipmentID, Status: domain.StatusPickedUp},
+		}
+		shipmentRepo := &MockShipmentRepository{}
+		eventRepo := &MockEventRepository{
+			GetEventsByShipmentIDFn: func(_ uuid.UUID) ([]domain.ShipmentEvent, error) {
+				return events, nil
+			},
+		}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		result, err := svc.GetShipmentHistory(shipmentID)
+
+		require.NoError(t, err)
+		assert.Len(t, result, 2)
+	})
+
+	t.Run("NoEvents", func(t *testing.T) {
+		shipmentRepo := &MockShipmentRepository{}
+		eventRepo := &MockEventRepository{
+			GetEventsByShipmentIDFn: func(_ uuid.UUID) ([]domain.ShipmentEvent, error) {
+				return []domain.ShipmentEvent{}, nil
+			},
+		}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		result, err := svc.GetShipmentHistory(shipmentID)
+
+		require.NoError(t, err)
+		assert.Empty(t, result)
+	})
+
+	t.Run("Error", func(t *testing.T) {
+		shipmentRepo := &MockShipmentRepository{}
+		eventRepo := &MockEventRepository{
+			GetEventsByShipmentIDFn: func(_ uuid.UUID) ([]domain.ShipmentEvent, error) {
+				return nil, fmt.Errorf("event store error")
+			},
+		}
+		svc := newTestService(shipmentRepo, eventRepo)
+
+		result, err := svc.GetShipmentHistory(shipmentID)
+
+		require.Error(t, err)
+		assert.Nil(t, result)
+		assert.Contains(t, err.Error(), "event store error")
+	})
 }
