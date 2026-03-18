@@ -34,6 +34,8 @@ func (ss ShipmentStatus) GetStatus() (string, error) {
 
 func (ss ShipmentStatus) CanTransitionTo(next ShipmentStatus) bool {
 	switch ss {
+	case StatusUnknown:
+		return next == StatusPending
 	case StatusPending:
 		return next == StatusPickedUp || next == StatusCancelled
 	case StatusPickedUp:

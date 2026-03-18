@@ -57,7 +57,7 @@ func NewShipment(ref, origin, dest string) (*Shipment, error) {
 		referenceNumber: ref,
 		origin:          origin,
 		destination:     dest,
-		currentStatus:   StatusPending,
+		currentStatus:   StatusUnknown,
 		units:           make([]Unit, 0),
 	}, nil
 }

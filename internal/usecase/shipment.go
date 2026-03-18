@@ -32,13 +32,13 @@ func (s *ShipmentService) CreateShipment(ref, origin, dest string, units []domai
 		shipment.AddUnit(u)
 	}
 
-	if err := s.shipmentRepo.SaveShipment(shipment); err != nil {
-		return nil, err
-	}
-
 	event, err := shipment.AddEvent(domain.StatusPending)
 
 	if err != nil {
+		return nil, err
+	}
+
+	if err := s.shipmentRepo.SaveShipment(shipment); err != nil {
 		return nil, err
 	}
 
