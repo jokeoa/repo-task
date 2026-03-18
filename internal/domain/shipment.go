@@ -85,6 +85,8 @@ func (ss ShipmentStatus) GetStatus() (string, error) {
 		return "Delivered", nil
 	case StatusCancelled:
 		return "Cancelled", nil
+	case StatusUnknown:
+		return "Unknown", nil
 	default:
 		return "", fmt.Errorf("invalid shipment status: %d", ss)
 	}
