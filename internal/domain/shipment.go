@@ -26,6 +26,13 @@ type Shipment struct {
 	driverRevenue   Money
 }
 
+func (s *Shipment) AddUnit(u Unit) {
+	s.units = append(s.units, u)
+}
+
+func (s Shipment) GetUnits() []Unit {
+	return s.units
+}
 func (s Shipment) GetID() uuid.UUID {
 	return s.id
 }
