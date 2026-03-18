@@ -1,0 +1,2 @@
+# Shipment gRPC Microservice
+This is a gRPC microservice for handling shipment-related operations. It provides functionalities such as creating shipments, tracking shipments, and managing shipment details.
