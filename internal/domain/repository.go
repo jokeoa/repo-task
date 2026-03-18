@@ -3,7 +3,7 @@ package domain
 import "github.com/google/uuid"
 
 type ShipmentRepository interface {
-	SaveShipment(shipment Shipment) error
+	SaveShipment(shipment *Shipment) error
 	GetShipmentByID(id uuid.UUID) (Shipment, error)
 }
 
