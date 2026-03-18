@@ -117,7 +117,7 @@ type ShipmentEvent struct {
 
 func (s *Shipment) AddEvent(ss ShipmentStatus) (ShipmentEvent, error) {
 	if !s.currentStatus.CanTransitionTo(ss) {
-		return ShipmentEvent{}, fmt.Errorf("invalid status transition from %d to %d", s.currentStatus, ss)
+		return ShipmentEvent{}, fmt.Errorf("%w: from %d to %d", ErrInvalidTransition, s.currentStatus, ss)
 	}
 
 	s.currentStatus = ss
