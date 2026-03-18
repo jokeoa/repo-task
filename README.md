@@ -13,6 +13,9 @@ PORT=8080 go run main.go
 
 # Run all tests
 go test ./...
+
+# Run with Docker
+docker compose up --build
 ```
 
 ## Architecture

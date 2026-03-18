@@ -1,0 +1,7 @@
+services:
+  shipment-service:
+    build: .
+    ports:
+      - "50051:50051"
+    environment:
+      - PORT=50051
