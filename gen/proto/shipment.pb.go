@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v7.34.0
-// source: proto/shipment.proto
+// source: shipment.proto
 
 package shipment
 
@@ -21,6 +21,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Unit struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Unit) Reset() {
+	*x = Unit{}
+	mi := &file_shipment_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Unit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Unit) ProtoMessage() {}
+
+func (x *Unit) ProtoReflect() protoreflect.Message {
+	mi := &file_shipment_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Unit.ProtoReflect.Descriptor instead.
+func (*Unit) Descriptor() ([]byte, []int) {
+	return file_shipment_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Unit) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Unit) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
 type ShipmentEventHistoryResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	ShipmentId    string                   `protobuf:"bytes,1,opt,name=shipment_id,json=shipmentId,proto3" json:"shipment_id,omitempty"`
@@ -31,7 +83,7 @@ type ShipmentEventHistoryResponse struct {
 
 func (x *ShipmentEventHistoryResponse) Reset() {
 	*x = ShipmentEventHistoryResponse{}
-	mi := &file_proto_shipment_proto_msgTypes[0]
+	mi := &file_shipment_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +95,7 @@ func (x *ShipmentEventHistoryResponse) String() string {
 func (*ShipmentEventHistoryResponse) ProtoMessage() {}
 
 func (x *ShipmentEventHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[0]
+	mi := &file_shipment_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +108,7 @@ func (x *ShipmentEventHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShipmentEventHistoryResponse.ProtoReflect.Descriptor instead.
 func (*ShipmentEventHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{0}
+	return file_shipment_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ShipmentEventHistoryResponse) GetShipmentId() string {
@@ -83,7 +135,7 @@ type AddStatusEventRequest struct {
 
 func (x *AddStatusEventRequest) Reset() {
 	*x = AddStatusEventRequest{}
-	mi := &file_proto_shipment_proto_msgTypes[1]
+	mi := &file_shipment_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -95,7 +147,7 @@ func (x *AddStatusEventRequest) String() string {
 func (*AddStatusEventRequest) ProtoMessage() {}
 
 func (x *AddStatusEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[1]
+	mi := &file_shipment_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -108,7 +160,7 @@ func (x *AddStatusEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddStatusEventRequest.ProtoReflect.Descriptor instead.
 func (*AddStatusEventRequest) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{1}
+	return file_shipment_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *AddStatusEventRequest) GetShipmentId() string {
@@ -136,7 +188,7 @@ type ShipmentEventResponse struct {
 
 func (x *ShipmentEventResponse) Reset() {
 	*x = ShipmentEventResponse{}
-	mi := &file_proto_shipment_proto_msgTypes[2]
+	mi := &file_shipment_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -148,7 +200,7 @@ func (x *ShipmentEventResponse) String() string {
 func (*ShipmentEventResponse) ProtoMessage() {}
 
 func (x *ShipmentEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[2]
+	mi := &file_shipment_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -161,7 +213,7 @@ func (x *ShipmentEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShipmentEventResponse.ProtoReflect.Descriptor instead.
 func (*ShipmentEventResponse) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{2}
+	return file_shipment_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ShipmentEventResponse) GetShipmentId() string {
@@ -186,17 +238,21 @@ func (x *ShipmentEventResponse) GetTimestamp() string {
 }
 
 type CreateShipmentRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ReferenceNumber string                 `protobuf:"bytes,1,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"`
-	Origin          string                 `protobuf:"bytes,2,opt,name=origin,proto3" json:"origin,omitempty"`
-	Destination     string                 `protobuf:"bytes,3,opt,name=destination,proto3" json:"destination,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ReferenceNumber    string                 `protobuf:"bytes,1,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"`
+	Origin             string                 `protobuf:"bytes,2,opt,name=origin,proto3" json:"origin,omitempty"`
+	Destination        string                 `protobuf:"bytes,3,opt,name=destination,proto3" json:"destination,omitempty"`
+	Units              []*Unit                `protobuf:"bytes,4,rep,name=units,proto3" json:"units,omitempty"`
+	Driver             string                 `protobuf:"bytes,5,opt,name=driver,proto3" json:"driver,omitempty"`
+	AmountCents        int64                  `protobuf:"varint,6,opt,name=amount_cents,json=amountCents,proto3" json:"amount_cents,omitempty"`
+	DriverRevenueCents int64                  `protobuf:"varint,7,opt,name=driver_revenue_cents,json=driverRevenueCents,proto3" json:"driver_revenue_cents,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *CreateShipmentRequest) Reset() {
 	*x = CreateShipmentRequest{}
-	mi := &file_proto_shipment_proto_msgTypes[3]
+	mi := &file_shipment_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +264,7 @@ func (x *CreateShipmentRequest) String() string {
 func (*CreateShipmentRequest) ProtoMessage() {}
 
 func (x *CreateShipmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[3]
+	mi := &file_shipment_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +277,7 @@ func (x *CreateShipmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateShipmentRequest.ProtoReflect.Descriptor instead.
 func (*CreateShipmentRequest) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{3}
+	return file_shipment_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateShipmentRequest) GetReferenceNumber() string {
@@ -245,6 +301,34 @@ func (x *CreateShipmentRequest) GetDestination() string {
 	return ""
 }
 
+func (x *CreateShipmentRequest) GetUnits() []*Unit {
+	if x != nil {
+		return x.Units
+	}
+	return nil
+}
+
+func (x *CreateShipmentRequest) GetDriver() string {
+	if x != nil {
+		return x.Driver
+	}
+	return ""
+}
+
+func (x *CreateShipmentRequest) GetAmountCents() int64 {
+	if x != nil {
+		return x.AmountCents
+	}
+	return 0
+}
+
+func (x *CreateShipmentRequest) GetDriverRevenueCents() int64 {
+	if x != nil {
+		return x.DriverRevenueCents
+	}
+	return 0
+}
+
 type GetShipmentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ShipmentId    string                 `protobuf:"bytes,1,opt,name=shipment_id,json=shipmentId,proto3" json:"shipment_id,omitempty"`
@@ -254,7 +338,7 @@ type GetShipmentRequest struct {
 
 func (x *GetShipmentRequest) Reset() {
 	*x = GetShipmentRequest{}
-	mi := &file_proto_shipment_proto_msgTypes[4]
+	mi := &file_shipment_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -266,7 +350,7 @@ func (x *GetShipmentRequest) String() string {
 func (*GetShipmentRequest) ProtoMessage() {}
 
 func (x *GetShipmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[4]
+	mi := &file_shipment_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -279,7 +363,7 @@ func (x *GetShipmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetShipmentRequest.ProtoReflect.Descriptor instead.
 func (*GetShipmentRequest) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{4}
+	return file_shipment_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetShipmentRequest) GetShipmentId() string {
@@ -290,19 +374,23 @@ func (x *GetShipmentRequest) GetShipmentId() string {
 }
 
 type ShipmentResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ShipmentId      string                 `protobuf:"bytes,1,opt,name=shipment_id,json=shipmentId,proto3" json:"shipment_id,omitempty"`
-	ReferenceNumber string                 `protobuf:"bytes,2,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"`
-	Origin          string                 `protobuf:"bytes,3,opt,name=origin,proto3" json:"origin,omitempty"`
-	Destination     string                 `protobuf:"bytes,4,opt,name=destination,proto3" json:"destination,omitempty"`
-	Status          string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ShipmentId         string                 `protobuf:"bytes,1,opt,name=shipment_id,json=shipmentId,proto3" json:"shipment_id,omitempty"`
+	ReferenceNumber    string                 `protobuf:"bytes,2,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"`
+	Origin             string                 `protobuf:"bytes,3,opt,name=origin,proto3" json:"origin,omitempty"`
+	Destination        string                 `protobuf:"bytes,4,opt,name=destination,proto3" json:"destination,omitempty"`
+	Status             string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	Units              []*Unit                `protobuf:"bytes,6,rep,name=units,proto3" json:"units,omitempty"`
+	Driver             string                 `protobuf:"bytes,7,opt,name=driver,proto3" json:"driver,omitempty"`
+	AmountCents        int64                  `protobuf:"varint,8,opt,name=amount_cents,json=amountCents,proto3" json:"amount_cents,omitempty"`
+	DriverRevenueCents int64                  `protobuf:"varint,9,opt,name=driver_revenue_cents,json=driverRevenueCents,proto3" json:"driver_revenue_cents,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ShipmentResponse) Reset() {
 	*x = ShipmentResponse{}
-	mi := &file_proto_shipment_proto_msgTypes[5]
+	mi := &file_shipment_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -314,7 +402,7 @@ func (x *ShipmentResponse) String() string {
 func (*ShipmentResponse) ProtoMessage() {}
 
 func (x *ShipmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_shipment_proto_msgTypes[5]
+	mi := &file_shipment_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +415,7 @@ func (x *ShipmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShipmentResponse.ProtoReflect.Descriptor instead.
 func (*ShipmentResponse) Descriptor() ([]byte, []int) {
-	return file_proto_shipment_proto_rawDescGZIP(), []int{5}
+	return file_shipment_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ShipmentResponse) GetShipmentId() string {
@@ -365,11 +453,42 @@ func (x *ShipmentResponse) GetStatus() string {
 	return ""
 }
 
-var File_proto_shipment_proto protoreflect.FileDescriptor
+func (x *ShipmentResponse) GetUnits() []*Unit {
+	if x != nil {
+		return x.Units
+	}
+	return nil
+}
 
-const file_proto_shipment_proto_rawDesc = "" +
+func (x *ShipmentResponse) GetDriver() string {
+	if x != nil {
+		return x.Driver
+	}
+	return ""
+}
+
+func (x *ShipmentResponse) GetAmountCents() int64 {
+	if x != nil {
+		return x.AmountCents
+	}
+	return 0
+}
+
+func (x *ShipmentResponse) GetDriverRevenueCents() int64 {
+	if x != nil {
+		return x.DriverRevenueCents
+	}
+	return 0
+}
+
+var File_shipment_proto protoreflect.FileDescriptor
+
+const file_shipment_proto_rawDesc = "" +
 	"\n" +
-	"\x14proto/shipment.proto\x12\bshipment\"x\n" +
+	"\x0eshipment.proto\x12\bshipment\"8\n" +
+	"\x04Unit\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\"x\n" +
 	"\x1cShipmentEventHistoryResponse\x12\x1f\n" +
 	"\vshipment_id\x18\x01 \x01(\tR\n" +
 	"shipmentId\x127\n" +
@@ -382,21 +501,29 @@ const file_proto_shipment_proto_rawDesc = "" +
 	"\vshipment_id\x18\x01 \x01(\tR\n" +
 	"shipmentId\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1c\n" +
-	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp\"|\n" +
+	"\ttimestamp\x18\x03 \x01(\tR\ttimestamp\"\x8f\x02\n" +
 	"\x15CreateShipmentRequest\x12)\n" +
 	"\x10reference_number\x18\x01 \x01(\tR\x0freferenceNumber\x12\x16\n" +
 	"\x06origin\x18\x02 \x01(\tR\x06origin\x12 \n" +
-	"\vdestination\x18\x03 \x01(\tR\vdestination\"5\n" +
+	"\vdestination\x18\x03 \x01(\tR\vdestination\x12$\n" +
+	"\x05units\x18\x04 \x03(\v2\x0e.shipment.UnitR\x05units\x12\x16\n" +
+	"\x06driver\x18\x05 \x01(\tR\x06driver\x12!\n" +
+	"\famount_cents\x18\x06 \x01(\x03R\vamountCents\x120\n" +
+	"\x14driver_revenue_cents\x18\a \x01(\x03R\x12driverRevenueCents\"5\n" +
 	"\x12GetShipmentRequest\x12\x1f\n" +
 	"\vshipment_id\x18\x01 \x01(\tR\n" +
-	"shipmentId\"\xb0\x01\n" +
+	"shipmentId\"\xc3\x02\n" +
 	"\x10ShipmentResponse\x12\x1f\n" +
 	"\vshipment_id\x18\x01 \x01(\tR\n" +
 	"shipmentId\x12)\n" +
 	"\x10reference_number\x18\x02 \x01(\tR\x0freferenceNumber\x12\x16\n" +
 	"\x06origin\x18\x03 \x01(\tR\x06origin\x12 \n" +
 	"\vdestination\x18\x04 \x01(\tR\vdestination\x12\x16\n" +
-	"\x06status\x18\x05 \x01(\tR\x06status2\xdd\x02\n" +
+	"\x06status\x18\x05 \x01(\tR\x06status\x12$\n" +
+	"\x05units\x18\x06 \x03(\v2\x0e.shipment.UnitR\x05units\x12\x16\n" +
+	"\x06driver\x18\a \x01(\tR\x06driver\x12!\n" +
+	"\famount_cents\x18\b \x01(\x03R\vamountCents\x120\n" +
+	"\x14driver_revenue_cents\x18\t \x01(\x03R\x12driverRevenueCents2\xdd\x02\n" +
 	"\x0fShipmentService\x12M\n" +
 	"\x0eCreateShipment\x12\x1f.shipment.CreateShipmentRequest\x1a\x1a.shipment.ShipmentResponse\x12R\n" +
 	"\x0eAddStatusEvent\x12\x1f.shipment.AddStatusEventRequest\x1a\x1f.shipment.ShipmentEventResponse\x12Z\n" +
@@ -404,63 +531,66 @@ const file_proto_shipment_proto_rawDesc = "" +
 	"\x0fGetShipmentByID\x12\x1c.shipment.GetShipmentRequest\x1a\x1a.shipment.ShipmentResponseB\x1dZ\x1btracker-task/proto/shipmentb\x06proto3"
 
 var (
-	file_proto_shipment_proto_rawDescOnce sync.Once
-	file_proto_shipment_proto_rawDescData []byte
+	file_shipment_proto_rawDescOnce sync.Once
+	file_shipment_proto_rawDescData []byte
 )
 
-func file_proto_shipment_proto_rawDescGZIP() []byte {
-	file_proto_shipment_proto_rawDescOnce.Do(func() {
-		file_proto_shipment_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_shipment_proto_rawDesc), len(file_proto_shipment_proto_rawDesc)))
+func file_shipment_proto_rawDescGZIP() []byte {
+	file_shipment_proto_rawDescOnce.Do(func() {
+		file_shipment_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_shipment_proto_rawDesc), len(file_shipment_proto_rawDesc)))
 	})
-	return file_proto_shipment_proto_rawDescData
+	return file_shipment_proto_rawDescData
 }
 
-var file_proto_shipment_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
-var file_proto_shipment_proto_goTypes = []any{
-	(*ShipmentEventHistoryResponse)(nil), // 0: shipment.ShipmentEventHistoryResponse
-	(*AddStatusEventRequest)(nil),        // 1: shipment.AddStatusEventRequest
-	(*ShipmentEventResponse)(nil),        // 2: shipment.ShipmentEventResponse
-	(*CreateShipmentRequest)(nil),        // 3: shipment.CreateShipmentRequest
-	(*GetShipmentRequest)(nil),           // 4: shipment.GetShipmentRequest
-	(*ShipmentResponse)(nil),             // 5: shipment.ShipmentResponse
+var file_shipment_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_shipment_proto_goTypes = []any{
+	(*Unit)(nil),                         // 0: shipment.Unit
+	(*ShipmentEventHistoryResponse)(nil), // 1: shipment.ShipmentEventHistoryResponse
+	(*AddStatusEventRequest)(nil),        // 2: shipment.AddStatusEventRequest
+	(*ShipmentEventResponse)(nil),        // 3: shipment.ShipmentEventResponse
+	(*CreateShipmentRequest)(nil),        // 4: shipment.CreateShipmentRequest
+	(*GetShipmentRequest)(nil),           // 5: shipment.GetShipmentRequest
+	(*ShipmentResponse)(nil),             // 6: shipment.ShipmentResponse
 }
-var file_proto_shipment_proto_depIdxs = []int32{
-	2, // 0: shipment.ShipmentEventHistoryResponse.events:type_name -> shipment.ShipmentEventResponse
-	3, // 1: shipment.ShipmentService.CreateShipment:input_type -> shipment.CreateShipmentRequest
-	1, // 2: shipment.ShipmentService.AddStatusEvent:input_type -> shipment.AddStatusEventRequest
-	4, // 3: shipment.ShipmentService.GetShipmentHistory:input_type -> shipment.GetShipmentRequest
-	4, // 4: shipment.ShipmentService.GetShipmentByID:input_type -> shipment.GetShipmentRequest
-	5, // 5: shipment.ShipmentService.CreateShipment:output_type -> shipment.ShipmentResponse
-	2, // 6: shipment.ShipmentService.AddStatusEvent:output_type -> shipment.ShipmentEventResponse
-	0, // 7: shipment.ShipmentService.GetShipmentHistory:output_type -> shipment.ShipmentEventHistoryResponse
-	5, // 8: shipment.ShipmentService.GetShipmentByID:output_type -> shipment.ShipmentResponse
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+var file_shipment_proto_depIdxs = []int32{
+	3, // 0: shipment.ShipmentEventHistoryResponse.events:type_name -> shipment.ShipmentEventResponse
+	0, // 1: shipment.CreateShipmentRequest.units:type_name -> shipment.Unit
+	0, // 2: shipment.ShipmentResponse.units:type_name -> shipment.Unit
+	4, // 3: shipment.ShipmentService.CreateShipment:input_type -> shipment.CreateShipmentRequest
+	2, // 4: shipment.ShipmentService.AddStatusEvent:input_type -> shipment.AddStatusEventRequest
+	5, // 5: shipment.ShipmentService.GetShipmentHistory:input_type -> shipment.GetShipmentRequest
+	5, // 6: shipment.ShipmentService.GetShipmentByID:input_type -> shipment.GetShipmentRequest
+	6, // 7: shipment.ShipmentService.CreateShipment:output_type -> shipment.ShipmentResponse
+	3, // 8: shipment.ShipmentService.AddStatusEvent:output_type -> shipment.ShipmentEventResponse
+	1, // 9: shipment.ShipmentService.GetShipmentHistory:output_type -> shipment.ShipmentEventHistoryResponse
+	6, // 10: shipment.ShipmentService.GetShipmentByID:output_type -> shipment.ShipmentResponse
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
-func init() { file_proto_shipment_proto_init() }
-func file_proto_shipment_proto_init() {
-	if File_proto_shipment_proto != nil {
+func init() { file_shipment_proto_init() }
+func file_shipment_proto_init() {
+	if File_shipment_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_shipment_proto_rawDesc), len(file_proto_shipment_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_shipment_proto_rawDesc), len(file_shipment_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_shipment_proto_goTypes,
-		DependencyIndexes: file_proto_shipment_proto_depIdxs,
-		MessageInfos:      file_proto_shipment_proto_msgTypes,
+		GoTypes:           file_shipment_proto_goTypes,
+		DependencyIndexes: file_shipment_proto_depIdxs,
+		MessageInfos:      file_shipment_proto_msgTypes,
 	}.Build()
-	File_proto_shipment_proto = out.File
-	file_proto_shipment_proto_goTypes = nil
-	file_proto_shipment_proto_depIdxs = nil
+	File_shipment_proto = out.File
+	file_shipment_proto_goTypes = nil
+	file_shipment_proto_depIdxs = nil
 }

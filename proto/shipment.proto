@@ -11,10 +11,16 @@ service ShipmentService {
   rpc GetShipmentByID(GetShipmentRequest) returns (ShipmentResponse);
 }
 
+message Unit {
+  string id = 1;
+  string description = 2;
+}
+
 message ShipmentEventHistoryResponse {
   string shipment_id = 1;
   repeated ShipmentEventResponse events = 2;
 }
+
 message AddStatusEventRequest {
   string shipment_id = 1;
   string status = 2;
@@ -30,6 +36,10 @@ message CreateShipmentRequest {
   string reference_number = 1;
   string origin = 2;
   string destination = 3;
+  repeated Unit units = 4;
+  string driver = 5;
+  int64 amount_cents = 6;
+  int64 driver_revenue_cents = 7;
 }
 
 message GetShipmentRequest {
@@ -42,4 +52,8 @@ message ShipmentResponse {
   string origin = 3;
   string destination = 4;
   string status = 5;
+  repeated Unit units = 6;
+  string driver = 7;
+  int64 amount_cents = 8;
+  int64 driver_revenue_cents = 9;
 }
