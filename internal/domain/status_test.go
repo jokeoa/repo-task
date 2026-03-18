@@ -42,6 +42,41 @@ func TestGetStatus(t *testing.T) {
 	}
 }
 
+func TestStatusFromString(t *testing.T) {
+	tests := []struct {
+		name        string
+		input       string
+		expected    ShipmentStatus
+		expectError bool
+	}{
+		{name: "Pending", input: "Pending", expected: StatusPending},
+		{name: "PickedUp", input: "Picked Up", expected: StatusPickedUp},
+		{name: "InTransit", input: "In Transit", expected: StatusInTransit},
+		{name: "Delivered", input: "Delivered", expected: StatusDelivered},
+		{name: "Cancelled", input: "Cancelled", expected: StatusCancelled},
+		{name: "Unknown", input: "Unknown", expected: StatusUnknown},
+		{name: "LowercasePending", input: "pending", expected: StatusPending},
+		{name: "MixedCase", input: "in transit", expected: StatusInTransit},
+		{name: "InvalidStatus", input: "Lost", expectError: true},
+		{name: "EmptyString", input: "", expectError: true},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := StatusFromString(tc.input)
+
+			if tc.expectError {
+				require.Error(t, err)
+				assert.ErrorIs(t, err, ErrInvalidStatus)
+				return
+			}
+
+			require.NoError(t, err)
+			assert.Equal(t, tc.expected, result)
+		})
+	}
+}
+
 func TestCanTransitionTo(t *testing.T) {
 	tests := []struct {
 		name     string

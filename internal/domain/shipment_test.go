@@ -81,6 +81,41 @@ func TestAddUnit(t *testing.T) {
 	})
 }
 
+func TestShipmentGettersAndSetters(t *testing.T) {
+	shipment, err := NewShipment("REF-001", "NYC", "LAX")
+	require.NoError(t, err)
+
+	t.Run("DriverDefaultNil", func(t *testing.T) {
+		assert.Nil(t, shipment.GetDriver())
+	})
+
+	t.Run("SetAndGetDriver", func(t *testing.T) {
+		driverID := uuid.New()
+		shipment.SetDriver(driverID)
+
+		require.NotNil(t, shipment.GetDriver())
+		assert.Equal(t, driverID, *shipment.GetDriver())
+	})
+
+	t.Run("AmountDefaultZero", func(t *testing.T) {
+		assert.Equal(t, Money(0), shipment.GetAmount())
+	})
+
+	t.Run("SetAndGetAmount", func(t *testing.T) {
+		shipment.SetAmount(5000)
+		assert.Equal(t, Money(5000), shipment.GetAmount())
+	})
+
+	t.Run("DriverRevenueDefaultZero", func(t *testing.T) {
+		assert.Equal(t, Money(0), shipment.GetDriverRevenue())
+	})
+
+	t.Run("SetAndGetDriverRevenue", func(t *testing.T) {
+		shipment.SetDriverRevenue(1500)
+		assert.Equal(t, Money(1500), shipment.GetDriverRevenue())
+	})
+}
+
 func TestNewShipment_UniqueIDs(t *testing.T) {
 	s1, err := NewShipment("REF-001", "NYC", "LAX")
 	require.NoError(t, err)

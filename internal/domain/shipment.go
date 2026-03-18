@@ -48,6 +48,30 @@ func (s Shipment) GetCurrentStatus() ShipmentStatus {
 	return s.currentStatus
 }
 
+func (s Shipment) GetDriver() *uuid.UUID {
+	return s.driver
+}
+
+func (s Shipment) GetAmount() Money {
+	return s.amount
+}
+
+func (s Shipment) GetDriverRevenue() Money {
+	return s.driverRevenue
+}
+
+func (s *Shipment) SetDriver(d uuid.UUID) {
+	s.driver = &d
+}
+
+func (s *Shipment) SetAmount(a Money) {
+	s.amount = a
+}
+
+func (s *Shipment) SetDriverRevenue(r Money) {
+	s.driverRevenue = r
+}
+
 func NewShipment(ref, origin, dest string) (*Shipment, error) {
 	if ref == "" || origin == "" || dest == "" {
 		return nil, ErrInvalidShipmentData

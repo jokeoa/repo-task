@@ -1,6 +1,9 @@
 package domain
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type ShipmentStatus int
 
@@ -30,6 +33,23 @@ func (ss ShipmentStatus) GetStatus() (string, error) {
 	default:
 		return "", fmt.Errorf("invalid shipment status: %d", ss)
 	}
+}
+
+var statusStringMap = map[string]ShipmentStatus{
+	"unknown":    StatusUnknown,
+	"pending":    StatusPending,
+	"picked up":  StatusPickedUp,
+	"in transit": StatusInTransit,
+	"delivered":  StatusDelivered,
+	"cancelled":  StatusCancelled,
+}
+
+func StatusFromString(s string) (ShipmentStatus, error) {
+	status, ok := statusStringMap[strings.ToLower(s)]
+	if !ok {
+		return StatusUnknown, fmt.Errorf("%w: %q", ErrInvalidStatus, s)
+	}
+	return status, nil
 }
 
 func (ss ShipmentStatus) CanTransitionTo(next ShipmentStatus) bool {
